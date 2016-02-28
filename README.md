@@ -19,3 +19,12 @@ Fairly custom scripts to connect to Google Calendar via OAUTH, calculate schedul
 #### Run command (Cron saved in 'config/PrivateRunCommand.cron'):
 `./src/LoadCalIntoSqlAndEmail.rb <<Gmail_Account_Name>> <<Gmail_Password>> <<Send_Email_To>> <<Calendar_Name>> <<Client_ID>> <<Client_Secret>> <<Refresh_Token>>`
 On first run leave `<<Refresh_Token>>` parameter empty and follow script prompts to receive it.
+
+#### Maintenance:
+To add new student and rate:
+INSERT INTO Student (first_name, last_name, start_date) VALUES ("<<FIRST_NAME>>", "<<LAST_NAME>>", julianday("<<START_DATE>>"));
+INSERT INTO Rate (student_id, rate, is_travel, start_date, end_date) VALUES ((SELECT id FROM Student WHERE first_name='<<NAME>>'), '<<NEW_RATE>>', '<<IS_TRAVEL_1>>', julianday("<<NEW_RATE_START_DATE>>"), null);
+
+To expire old rate and add new one for existing student;
+UPDATE Rate SET julianday("2016-01-27") WHERE id='<<RATE_ID>>';
+INSERT INTO Rate (student_id, rate, is_travel, start_date, end_date) VALUES ((SELECT id FROM Student WHERE first_name='<<NAME>>'), '<<NEW_RATE>>', '<<IS_TRAVEL_1>>', julianday("<<NEW_RATE_START_DATE>>"), null);
