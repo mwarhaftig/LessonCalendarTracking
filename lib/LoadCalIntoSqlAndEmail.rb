@@ -85,7 +85,7 @@ def cal_events_to_db (periodStartTime = (Time.new(Time.now.year, Time.now.month,
 end
 
 def comma_numbers(number, delimiter = ',')
-    number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1#{delimiter}").reverse
+    number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9]{1})))}, "\\1#{delimiter}").reverse
 end
 
 # Save input parameters.
@@ -140,7 +140,7 @@ prevYtdTotal = @db.execute( "SELECT lessons,hours,pay FROM Lesson_Prev_YTD_Total
 prevYtdTotal[0] = ["0", "0", "0"] if prevYtdTotal[0][1].nil?
 
 histLessons = "<tr><th>Lessons</th><td>#{weekTotal[0][0]}</td><td>#{prevWeekTotal[0][0]}</td><td>#{monthTotal[0][0]}</td><td>#{prevMonthTotal[0][0]}</td><td>#{ytdTotal[0][0]}</td><td>#{prevYtdTotal[0][0]}</td></tr>"
-histHours = "<tr><th>Hours</th><td>#{weekTotal[0][1]}</td><td>#{prevWeekTotal[0][1]}</td><td>#{monthTotal[0][1]}</td><td>#{prevMonthTotal[0][1]}</td><td>#{ytdTotal[0][1]}</td><td>#{prevYtdTotal[0][1]}</td></tr>"
+histHours = "<tr><th>Hours</th><td>" + comma_numbers(sprintf('%.1f',weekTotal[0][1])) + "</td><td>" + comma_numbers(sprintf('%.1f',prevWeekTotal[0][1])) + "</td><td>" + comma_numbers(sprintf('%.1f',monthTotal[0][1])) + "</td><td>" + comma_numbers(sprintf('%.1f',prevMonthTotal[0][1])) + "</td><td>" + comma_numbers(sprintf('%.1f',ytdTotal[0][1])) + "</td><td>" + comma_numbers(sprintf('%.1f',prevYtdTotal[0][1])) + "</td></tr>"
 histPay = "<tr><th>Pay</th><td>" + comma_numbers(sprintf('$%.2f',weekTotal[0][2])) + "</td><td>" + comma_numbers(sprintf('$%.2f',prevWeekTotal[0][2])) + "</td><td>" + comma_numbers(sprintf('$%.2f',monthTotal[0][2])) + "</td><td>" + comma_numbers(sprintf('$%.2f',prevMonthTotal[0][2])) + "</td><td>" + comma_numbers(sprintf('$%.2f',ytdTotal[0][2])) + "</td><td>" + comma_numbers(sprintf('$%.2f',prevYtdTotal[0][2])) + "</td></tr>"
 
 schedIssTable = ""
