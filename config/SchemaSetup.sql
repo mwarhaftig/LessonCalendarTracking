@@ -54,8 +54,8 @@ CREATE VIEW IF NOT EXISTS Lesson_Week_Details AS
  SELECT s.first_name as name,count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
  JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of day', '-7 day')
- AND l.end_time <= julianday('now', 'start of day')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of day', '-6 day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '1 day')
  AND r.start_date <= l.start_time 
  AND (r.end_date IS NULL OR r.end_date > l.start_time)
  GROUP BY s.first_name
@@ -66,8 +66,8 @@ CREATE VIEW IF NOT EXISTS Lesson_Week_Total AS
  SELECT count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
  JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of day', '-7 day')
- AND l.end_time <= julianday('now', 'start of day')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of day', '-6 day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '1 day')
  AND r.start_date <= l.start_time
  AND (r.end_date IS NULL OR r.end_date > l.start_time);
 
@@ -76,8 +76,8 @@ CREATE VIEW IF NOT EXISTS Lesson_Prev_Week_Total AS
  SELECT count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
  JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of day', '-14 day')
- AND l.end_time <= julianday('now', 'start of day', '-7 day')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of day', '-13 day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '-6 day')
  AND r.start_date <= l.start_time 
  AND (r.end_date IS NULL OR r.end_date > l.start_time);
 
@@ -86,8 +86,8 @@ CREATE VIEW IF NOT EXISTS Lesson_30_Day_Total AS
  SELECT count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
  JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of day', '-30 day')
- AND l.end_time <= julianday('now', 'start of day')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of day', '-29 day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '1 day')
  AND r.start_date <= l.start_time 
  AND (r.end_date IS NULL OR r.end_date > l.start_time);
  
@@ -96,8 +96,8 @@ DROP VIEW Lesson_Prev_30_Day_Total;
  SELECT count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
  JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of day', '-60 day')
- AND l.end_time <= julianday('now', 'start of day', '-30 day')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of day', '-59 day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '-29 day')
  AND r.start_date <= l.start_time
  AND (r.end_date IS NULL OR r.end_date > l.start_time);
 
@@ -106,8 +106,8 @@ CREATE VIEW IF NOT EXISTS Lesson_YTD_Total AS
  SELECT count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
  JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of year', 'start of day')
- AND l.end_time <= julianday('now', 'start of day')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of year', 'start of day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '1 day')
  AND r.start_date <= l.start_time
  AND (r.end_date IS NULL OR r.end_date > l.start_time);
  
@@ -116,7 +116,7 @@ CREATE VIEW IF NOT EXISTS Lesson_Prev_YTD_Total AS
  SELECT count(*) as lessons, SUM(ROUND((l.end_time - l.start_time) * 24,2)) as hours, sum(r.rate * ROUND((l.end_time - l.start_time) * 24,2)) as pay
  FROM Lesson l JOIN Student s ON l.student_id = s.id
 JOIN Rate r ON r.student_id = s.id
- WHERE l.start_time > julianday('now', 'start of year', '-1 year', 'start of day')
- AND l.end_time <= julianday('now', '-1 year')
+ WHERE l.start_time > julianday('now', 'localtime', 'start of year', '-1 year', 'start of day')
+ AND l.end_time <= julianday('now', 'localtime', 'start of day', '-1 year', '1 day')
  AND r.start_date <= l.start_time
  AND (r.end_date IS NULL OR r.end_date > l.start_time);

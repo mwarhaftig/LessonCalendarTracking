@@ -26,5 +26,5 @@ To add new student and rate:
 `INSERT INTO Rate (student_id, rate, is_travel, start_date, end_date) VALUES ((SELECT id FROM Student WHERE first_name='<<NAME>>'), '<<NEW_RATE>>', '<<IS_TRAVEL_1>>', julianday("<<NEW_RATE_START_DATE>>"), null);`
 
 To expire old rate and add new one for existing student;
-`UPDATE Rate SET julianday("2016-01-27") WHERE id='<<RATE_ID>>';`
+`UPDATE Rate SET end_date=julianday("2016-01-27") WHERE id='<<RATE_ID>>';`
 `INSERT INTO Rate (student_id, rate, is_travel, start_date, end_date) VALUES ((SELECT id FROM Student WHERE first_name='<<NAME>>'), '<<NEW_RATE>>', '<<IS_TRAVEL_1>>', julianday("<<NEW_RATE_START_DATE>>"), null);`
