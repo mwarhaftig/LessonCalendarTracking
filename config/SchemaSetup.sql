@@ -120,3 +120,15 @@ JOIN Rate r ON r.student_id = s.id
  AND l.end_time <= julianday('now', 'localtime', 'start of day', '-1 year', '1 day')
  AND r.start_date <= l.start_time
  AND (r.end_date IS NULL OR r.end_date > l.start_time);
+
+DROP VIEW Student_Over_2_Years_At_Current_Rate;
+CREATE VIEW IF NOT EXISTS Student_Over_2_Years_At_Current_Rate AS 
+ SELECT s.first_name as name,julianday('now') - r.start_date as days_at_rate
+ FROM student s JOIN rate r ON s.id = r.student_id 
+ WHERE (julianday('now') - r.start_date) > 730 
+ AND r.end_date IS NULL 
+ AND s.id IN 
+  (SELECT l.student_id FROM lesson l 
+  WHERE l.start_time > julianday('now', 'localtime', 'start of day', '-6 day')
+  AND l.end_time <= julianday('now', 'localtime', 'start of day', '1 day'))
+ ORDER BY r.start_date;

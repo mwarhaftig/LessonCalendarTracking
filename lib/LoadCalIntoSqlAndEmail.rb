@@ -124,6 +124,13 @@ weekTotalSum = ""
     weekTotalSum = "#{weekTotalSum}<tr><td>TOTAL</td><td>#{lessons}</td><td>#{hours}</td><td>" + comma_numbers(sprintf('$%.2f', pay)) + "</td></tr>"
 end
 
+studentsOver2YearsAtRate = ""
+@db.execute( "SELECT name,days_at_rate FROM Student_Over_2_Years_At_Current_Rate" ) do |name,days_at_rate|
+    yearsAtRate = days_at_rate.round / 365
+    monthsAtRate = (days_at_rate.round % 365) / 30
+    studentsOver2YearsAtRate = "<tr><td>#{name}</td><td>#{yearsAtRate} years #{monthsAtRate} months</td></tr>"
+end
+
 weekTotal = @db.execute( "SELECT lessons,hours,pay FROM Lesson_Week_Total" )
 weekTotal[0] = ["0", "0", "0"] if weekTotal[0][1].nil?
 prevWeekTotal = @db.execute( "select lessons,hours,pay FROM Lesson_Prev_Week_Total" )
@@ -146,6 +153,10 @@ histPay = "<tr><th>Pay</th><td>" + comma_numbers(sprintf('$%.2f',weekTotal[0][2]
 schedIssTable = ""
 if schedulingIssues != ""
     schedIssTable = "<h3>Scheduling Issues</h3><table id=\"vertNoTotal\" width=\"550\"><tr><th>Scheduling Item</th><th>Start Time</th><th>End Time</th><th>Issue</th><tr>#{schedulingIssues}</table>"
+end
+
+if studentsOver2YearsAtRate != ""
+    studentsOver2YearsAtRate = "<h3>Students Paying Same Rate For Over Two Years</h3><table id=\"vertNoTotal\" width=\"550\"><tr><th>Student</th><th>Time At Same Rate</th><tr>#{studentsOver2YearsAtRate}</table>"
 end
 
 puts "Creating email."
@@ -219,6 +230,8 @@ table#horiz td:nth-child(even) {
 #{weekDetail}
 #{weekTotalSum}
 </table>
+<br>
+#{studentsOver2YearsAtRate}
 <br>
 #{schedIssTable}
 
