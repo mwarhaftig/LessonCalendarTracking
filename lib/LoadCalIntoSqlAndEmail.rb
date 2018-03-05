@@ -114,7 +114,7 @@ puts "Getting database views data."
 weekDetail = ""
 @db.execute( "SELECT name,lessons,hours,pay FROM Lesson_Week_Details" ) do |name,lessons,hours,pay|
     next if lessons == 0
-    weekDetail = "#{weekDetail}<tr><td>#{name}</td><td>#{lessons}</td><td>#{hours}</td><td>" + sprintf('$%.2f', comma_numbers(pay)) + "</td></tr>"
+    weekDetail = "#{weekDetail}<tr><td>#{name}</td><td>#{lessons}</td><td>#{hours}</td><td>" +  comma_numbers(sprintf('$%.2f', pay)) + "</td></tr>"
 end
 
 weekTotalSum = ""
